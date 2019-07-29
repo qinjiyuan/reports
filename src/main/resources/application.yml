@@ -5,37 +5,37 @@ server:
 
 spring:
   application:
-    product: birt #²úÆ·
-    module: report #Ä£¿é
-    name: demo #×ÓÄ£¿éÃû³Æ
+    product: birt #äº§å“
+    module: report #æ¨¡å—
+    name: demo #å­æ¨¡å—åç§°
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://39.97.104.203:3306/firstboot?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: Radiant123
-    #³õÊ¼»¯Á¬½ÓÊıÁ¿£¬×î´ó×îĞ¡Á¬½ÓÊı
+    #åˆå§‹åŒ–è¿æ¥æ•°é‡ï¼Œæœ€å¤§æœ€å°è¿æ¥æ•°
     initialSize: 5
     maxActive: 10
     minIdle: 3
-    #»ñÈ¡Á¬½ÓµÈ´ı³¬Ê±µÄÊ±¼ä
+    #è·å–è¿æ¥ç­‰å¾…è¶…æ—¶çš„æ—¶é—´
     maxWait: 600000
-    #³¬¹ıÊ±¼äÏŞÖÆÊÇ·ñ»ØÊÕ
+    #è¶…è¿‡æ—¶é—´é™åˆ¶æ˜¯å¦å›æ”¶
     removeAbandoned: true
-    #³¬¹ıÊ±¼äÏŞÖÆ¶à³¤
+    #è¶…è¿‡æ—¶é—´é™åˆ¶å¤šé•¿
     removeAbandonedTimeout: 180
-    #ÅäÖÃ¼ä¸ô¶à¾Ã²Å½øĞĞÒ»´Î¼ì²â£¬¼ì²âĞèÒª¹Ø±ÕµÄ¿ÕÏĞÁ¬½Ó£¬µ¥Î»ÊÇºÁÃë
+    #é…ç½®é—´éš”å¤šä¹…æ‰è¿›è¡Œä¸€æ¬¡æ£€æµ‹ï¼Œæ£€æµ‹éœ€è¦å…³é—­çš„ç©ºé—²è¿æ¥ï¼Œå•ä½æ˜¯æ¯«ç§’
     timeBetweenEvictionRunsMillis: 600000
-    #ÅäÖÃÒ»¸öÁ¬½ÓÔÚ³ØÖĞ×îĞ¡Éú´æµÄÊ±¼ä£¬µ¥Î»ÊÇºÁÃë
+    #é…ç½®ä¸€ä¸ªè¿æ¥åœ¨æ± ä¸­æœ€å°ç”Ÿå­˜çš„æ—¶é—´ï¼Œå•ä½æ˜¯æ¯«ç§’
     minEvictableIdleTimeMillis: 300000
-    #ÓÃÀ´¼ì²âÁ¬½ÓÊÇ·ñÓĞĞ§µÄsql£¬ÒªÇóÊÇÒ»¸ö²éÑ¯Óï¾ä
+    #ç”¨æ¥æ£€æµ‹è¿æ¥æ˜¯å¦æœ‰æ•ˆçš„sqlï¼Œè¦æ±‚æ˜¯ä¸€ä¸ªæŸ¥è¯¢è¯­å¥
     validationQuery: SELECT 1 FROM DUAL
-    #ÉêÇëÁ¬½ÓµÄÊ±ºò¼ì²â
+    #ç”³è¯·è¿æ¥çš„æ—¶å€™æ£€æµ‹
     testWhileIdle: true
-    #ÉêÇëÁ¬½ÓÊ±Ö´ĞĞvalidationQuery¼ì²âÁ¬½ÓÊÇ·ñÓĞĞ§£¬ÅäÖÃÎªtrue»á½µµÍĞÔÄÜ
+    #ç”³è¯·è¿æ¥æ—¶æ‰§è¡ŒvalidationQueryæ£€æµ‹è¿æ¥æ˜¯å¦æœ‰æ•ˆï¼Œé…ç½®ä¸ºtrueä¼šé™ä½æ€§èƒ½
     testOnBorrow: false
-    #¹é»¹Á¬½ÓÊ±Ö´ĞĞvalidationQuery¼ì²âÁ¬½ÓÊÇ·ñÓĞĞ§£¬ÅäÖÃÎªtrue»á½µµÍĞÔÄÜ
+    #å½’è¿˜è¿æ¥æ—¶æ‰§è¡ŒvalidationQueryæ£€æµ‹è¿æ¥æ˜¯å¦æœ‰æ•ˆï¼Œé…ç½®ä¸ºtrueä¼šé™ä½æ€§èƒ½
     testOnReturn: false
-    #´ò¿ªPSCache£¬²¢ÇÒÖ¸¶¨Ã¿¸öÁ¬½ÓÉÏPSCacheµÄ´óĞ¡
+    #æ‰“å¼€PSCacheï¼Œå¹¶ä¸”æŒ‡å®šæ¯ä¸ªè¿æ¥ä¸ŠPSCacheçš„å¤§å°
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 50
 
@@ -45,7 +45,7 @@ eureka:
     registry-fetch-interval-seconds: 3
     enabled: true
     serviceUrl:
-      defaultZone: http://192.168.1.140:8761/eureka
+      defaultZone: http://localhost:8761/eureka
   instance:
     lease-renewal-interval-in-seconds: 3
     lease-expiration-duration-in-seconds: 5
@@ -55,3 +55,5 @@ eureka:
       user.name: admin
       user.password: 123456
 
+host:
+  stockservice: http://127.0.0.1:8080

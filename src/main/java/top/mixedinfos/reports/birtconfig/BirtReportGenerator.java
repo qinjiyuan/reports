@@ -1,6 +1,7 @@
 package top.mixedinfos.reports.birtconfig;
 
 import org.eclipse.birt.report.engine.api.*;
+import org.eclipse.birt.report.engine.emitter.ppt.PPTRender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,6 @@ public class BirtReportGenerator {
     @Autowired
     private IReportEngine birtEngine ;
 
-
     public ByteArrayOutputStream generate(ReportParameter rptParam) throws Exception{
         //ByteArrayOutputStream 底层维护了一个byte[]，可以自动扩容
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -31,7 +31,7 @@ public class BirtReportGenerator {
 
             PDFRenderOption pdfOptions = new PDFRenderOption(options);
             pdfOptions.setOutputFormat("pdf");
-            pdfOptions.setOption  (IPDFRenderOption.PAGE_OVERFLOW, IPDFRenderOption.FIT_TO_PAGE_SIZE);
+            pdfOptions.setOption(IPDFRenderOption.PAGE_OVERFLOW, IPDFRenderOption.FIT_TO_PAGE_SIZE);
             pdfOptions.setOutputStream(baos);
             runAndRenderTask.setRenderOption(pdfOptions);
 
@@ -49,12 +49,19 @@ public class BirtReportGenerator {
             excelOptions.setOutputStream(baos);
             runAndRenderTask.setRenderOption(excelOptions);
 
+        }else if(rptParam.getFormat().equalsIgnoreCase("pptx")){
+
+            RenderOption pptRendorOptions =  new RenderOption(options);
+            pptRendorOptions.setOutputFormat("pptx");
+            pptRendorOptions.setOutputStream(baos);
+            runAndRenderTask.setRenderOption(pptRendorOptions);
+
         }else if(rptParam.getFormat().equalsIgnoreCase("html")){
 
-            HTMLRenderOption htmlOptions =  new HTMLRenderOption(options);
-            htmlOptions.setOutputFormat("html");
-            htmlOptions.setOutputStream(baos);
-            runAndRenderTask.setRenderOption(htmlOptions);
+            HTMLRenderOption htmlRenderOption =  new HTMLRenderOption(options);
+            htmlRenderOption.setOutputFormat("html");
+            htmlRenderOption.setOutputStream(baos);
+            runAndRenderTask.setRenderOption(htmlRenderOption);
 
         }
 

@@ -36,8 +36,14 @@ public class StockDataService {
             data.setVolume(1000 + (int) (Math.random() * 500));
             begin = close;
             data.setDate(day.getTime());
+            data.setName(company+i);
             history.add(data);
         }
         return history;
+    }
+
+
+    public String getBaseUrl(String names){
+	    return "https://dpic.tiankong.com/7d/dc/QJ8166545612.jpg?x-oss-process=style/670ws";
     }
 }

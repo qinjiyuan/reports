@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="comments">版权所有 (c) 2008 &lt;&lt;MixNews>></property>
-    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
     <property name="units">in</property>
-    <method name="initialize"><![CDATA[spring=reportContext.getAppContext().get("spring");
+    <method name="initialize"><![CDATA[spring = reportContext.getAppContext().get("spring");
 var stockDataService=spring.getBean("stockDataService");]]></method>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">96</property>
+    <parameters>
+        <scalar-parameter name="names" id="181">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="urls" id="191">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
     <data-sources>
         <script-data-source name="srcStocks" id="35"/>
     </data-sources>
@@ -44,6 +68,11 @@ var stockDataService=spring.getBean("stockDataService");]]></method>
                     <property name="name">columnVolume</property>
                     <property name="dataType">integer</property>
                 </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">columnName</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -69,6 +98,10 @@ var stockDataService=spring.getBean("stockDataService");]]></method>
                 <structure>
                     <property name="columnName">columnVolume</property>
                     <text-property name="displayName">Volume</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">columnName</property>
+                    <text-property name="displayName">Name</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -104,26 +137,33 @@ var stockDataService=spring.getBean("stockDataService");]]></method>
                         <property name="name">columnVolume</property>
                         <property name="dataType">integer</property>
                     </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">columnName</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">srcStocks</property>
-            <method name="open"><![CDATA[var stockDataService=spring.getBean("stockDataService");
-listdata = stockDataService.getStockValues("company");
+            <method name="open"><![CDATA[var stockDataService = spring.getBean("stockDataService");
+listdata = stockDataService.getStockValues(params["names"]);
 count=0;
 
 ]]></method>
             <method name="fetch"><![CDATA[if(count < listdata.size()){
-	   count++;
        row["columnDate"] = listdata.get(count).getDate();
        row["columnOpen"] = listdata.get(count).getOpen();
        row["columnHigh"] = listdata.get(count).getHigh();
        row["columnLow"] = listdata.get(count).getLow();
        row["columnClose"] = listdata.get(count).getClose();
        row["columnVolume"] = listdata.get(count).getVolume();
+       row["columnName"] = listdata.get(count).getName();
+       count++;
        return true;
 }
 
 return false;]]></method>
+            <method name="close"><![CDATA[listdata = null;]]></method>
         </script-data-set>
     </data-sets>
     <page-setup>
@@ -137,7 +177,7 @@ return false;]]></method>
         </simple-master-page>
     </page-setup>
     <body>
-        <table id="37">
+        <table id="129">
             <property name="dataSet">dataSetSocks</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -176,97 +216,337 @@ return false;]]></method>
                     <expression name="expression" type="javascript">dataSetRow["columnVolume"]</expression>
                     <property name="dataType">integer</property>
                 </structure>
+                <structure>
+                    <property name="name">columnName</property>
+                    <text-property name="displayName">Name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["columnName"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
-            <column id="71"/>
-            <column id="72"/>
-            <column id="73"/>
-            <column id="74"/>
-            <column id="75"/>
-            <column id="76"/>
+            <column id="168"/>
+            <column id="169"/>
+            <column id="170"/>
+            <column id="171"/>
+            <column id="172"/>
+            <column id="173"/>
+            <column id="174"/>
             <header>
-                <row id="38">
-                    <cell id="39">
-                        <label id="40">
+                <row id="130">
+                    <cell id="131">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="132">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
                             <text-property name="text">Date</text-property>
                         </label>
                     </cell>
-                    <cell id="41">
-                        <label id="42">
+                    <cell id="133">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="134">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
                             <text-property name="text">Open</text-property>
                         </label>
                     </cell>
-                    <cell id="43">
-                        <label id="44">
+                    <cell id="135">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="136">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
                             <text-property name="text">Hign</text-property>
                         </label>
                     </cell>
-                    <cell id="45">
-                        <label id="46">
+                    <cell id="137">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="138">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
                             <text-property name="text">Low</text-property>
                         </label>
                     </cell>
-                    <cell id="47">
-                        <label id="48">
+                    <cell id="139">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="140">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
                             <text-property name="text">Close</text-property>
                         </label>
                     </cell>
-                    <cell id="49">
-                        <label id="50">
+                    <cell id="141">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="142">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
                             <text-property name="text">Volume</text-property>
+                        </label>
+                    </cell>
+                    <cell id="143">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="144">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#8080C0</property>
+                            <text-property name="text">Name</text-property>
                         </label>
                     </cell>
                 </row>
             </header>
             <detail>
-                <row id="51">
-                    <cell id="52">
-                        <data id="53">
+                <row id="145">
+                    <cell id="146">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="147">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">columnDate</property>
                         </data>
                     </cell>
-                    <cell id="54">
-                        <data id="55">
+                    <cell id="148">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="149">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">columnOpen</property>
                         </data>
                     </cell>
-                    <cell id="56">
-                        <data id="57">
+                    <cell id="150">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="151">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">columnHign</property>
                         </data>
                     </cell>
-                    <cell id="58">
-                        <data id="59">
+                    <cell id="152">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="153">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">columnLow</property>
                         </data>
                     </cell>
-                    <cell id="60">
-                        <data id="61">
+                    <cell id="154">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="155">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">columnClose</property>
                         </data>
                     </cell>
-                    <cell id="62">
-                        <data id="63">
+                    <cell id="156">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="157">
                             <property name="textAlign">center</property>
                             <property name="resultSetColumn">columnVolume</property>
+                        </data>
+                    </cell>
+                    <cell id="158">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="159">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">columnName</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="64">
-                    <cell id="65"/>
-                    <cell id="66"/>
-                    <cell id="67"/>
-                    <cell id="68"/>
-                    <cell id="69"/>
-                    <cell id="70"/>
+                <row id="160">
+                    <cell id="161">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
+                    <cell id="162">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
+                    <cell id="163">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
+                    <cell id="164">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
+                    <cell id="165">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
+                    <cell id="166">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
+                    <cell id="167">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                    </cell>
                 </row>
             </footer>
         </table>
+        <image id="189">
+            <property name="height">3.2604166666666665in</property>
+            <property name="width">6.197916666666667in</property>
+            <property name="source">url</property>
+            <expression name="uri" type="constant">https://dpic.tiankong.com/7d/dc/QJ8166545612.jpg?x-oss-process=style/670ws</expression>
+        </image>
+        <image id="192">
+            <property name="source">url</property>
+            <expression name="uri" type="javascript">params["urls"].value</expression>
+        </image>
     </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">toopen.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABXUlEQVRIS92VMUvDcBDF76WaoIPo6KYi
+                FF10dlEnFRJQcFcEW/0ADimCdbDp6KRttKCjcwviZF2dzCpCnV2qg8UmbU4iFKrFeBU6tJkf73fv/e8I
+                qMMfOuxPPQjYvd6Pcq02+r26SCVjHN3/p86WimKFRA5EW81mTPxo61a0ewGSyX2i5TM9dfNTK6qouwFM
+                /A7wOnz6CEsCkHOqp8ttV8RMh25NPe7XqjOSqhoar6o5F2vJ1/A3YH6pqN7EgKvuAXQgBjA7WcOaDfSh
+                AAbvuK52pfa5JYCGpQCwv5gx0sVQQHBc5crT9MjgZA6EDak5M9/ZhrXQ0P+eAFiFUne4rpSk5l8TR/zx
+                zEr6ORzAPJU1rLlY3iwCmJcCmPjS1q3NZn1LgnjBPGfGiUL+EEO5bcP8zfW0sWBzQgHbhcRScPLxvPlA
+                gHg1g3W2jVTyzzuQTizV9eAfTRpdqut4RZ8bY58ZKycHQQAAAABJRU5ErkJggg==
+</property>
+        </structure>
+    </list-property>
 </report>

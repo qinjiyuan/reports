@@ -1,10 +1,10 @@
 package top.mixedinfos.reports.birtdemo.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,10 +14,11 @@ import top.mixedinfos.reports.birtconfig.ReportParameter;
 import top.mixedinfos.reports.utils.DataTransformUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
-@Api(description = "报表", tags = "report")
 @RestController
 @RequestMapping(value = "/report/test")
 @Slf4j
@@ -27,7 +28,6 @@ public class StockController {
     private BirtReportGenerator birtReportGenerator;
 
 
-    @ApiOperation(value = "PDF", notes = "PDF测试", httpMethod = "GET")
     @GetMapping("/stockPdf")
     public String getStockPdf(){
         ReportParameter rm=new ReportParameter("stock_report","PDF");
@@ -45,10 +45,11 @@ public class StockController {
     }
 
 
-    @ApiOperation(value = "PDF", notes = "PDF测试", httpMethod = "GET")
     @GetMapping("/saveFile")
-    public String getStockFile(@RequestParam("fileType") String fileType){
+    public String getStockFile(@RequestParam("fileType") String fileType,@RequestParam("names") String names){
         ReportParameter rm=new ReportParameter("stock_report",fileType);
+        rm.setParameter("names",names);
+        rm.setParameter("urls","https://dpic.tiankong.com/7d/dc/QJ8166545612.jpg?x-oss-process=style/670ws");
         String base64 = "helo";
         try {
             ByteArrayOutputStream baos = birtReportGenerator.generate(rm);
@@ -61,6 +62,13 @@ public class StockController {
         }
 
         return  base64 ;
+    }
+
+    public static void main(String[]args) throws IOException {
+        File file = new File("E:\\test\\1.jpg");
+
+        String base64 = Base64Utils.encodeToString(FileUtils.readFileToByteArray(file));
+        System.out.println(base64);
     }
 
 }
