@@ -46,10 +46,14 @@ public class StockController {
 
 
     @GetMapping("/saveFile")
-    public String getStockFile(@RequestParam("fileType") String fileType,@RequestParam("names") String names){
-        ReportParameter rm=new ReportParameter("stock_report",fileType);
+    public String getStockFile(@RequestParam("fileType") String fileType,@RequestParam("names") String names,@RequestParam("filenames") String filenames){
+        ReportParameter rm=new ReportParameter(filenames,fileType);
+
+        //该参数在报表中以parameter接收
         rm.setParameter("names",names);
         rm.setParameter("urls","https://dpic.tiankong.com/7d/dc/QJ8166545612.jpg?x-oss-process=style/670ws");
+
+
         String base64 = "helo";
         try {
             ByteArrayOutputStream baos = birtReportGenerator.generate(rm);
